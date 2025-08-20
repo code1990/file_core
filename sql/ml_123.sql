@@ -1,8 +1,8 @@
 /* =========================================================
  * 交易日历：is_open=1 表示开市
  * ========================================================= */
-CREATE TABLE IF NOT EXISTS t_trade_calendar (
-  trade_date DATE        NOT NULL PRIMARY KEY COMMENT '交易日',
+CREATE TABLE IF NOT EXISTS t_stock_calendar (
+  trade_date INT        NOT NULL PRIMARY KEY COMMENT '交易日',
   is_open    TINYINT(1)  NOT NULL COMMENT '是否开市(1/0)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='交易日历';
 
@@ -11,18 +11,16 @@ CREATE TABLE IF NOT EXISTS t_trade_calendar (
  * 含义：某日-某股-某 xg_id 触发了一次信号（未记录即0）
  * val：可存1(触发)或强度分数
  * ========================================================= */
-CREATE TABLE IF NOT EXISTS t_signal_events (
-  trade_date  DATE         NOT NULL COMMENT '交易日',
+CREATE TABLE IF NOT EXISTS t_stock_signal (
+  trade_date  int         NOT NULL COMMENT '交易日',
   stock_code  VARCHAR(16)  NOT NULL COMMENT '股票代码',
-  xg_id       INT          NOT NULL COMMENT '信号/因子/选股器ID',
-  val         DOUBLE       NOT NULL DEFAULT 1 COMMENT '信号值(1=触发; 也可为强度)',
-  created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (trade_date, stock_code, xg_id),
+  signal_name       VARCHAR(100)          NOT NULL COMMENT '信号/因子/选股器',
+  signal_value         DOUBLE       NOT NULL DEFAULT 1 COMMENT '信号值(1=触发; 也可为强度)',
+  PRIMARY KEY (trade_date, stock_code, signal_name),
   KEY idx_dt (trade_date),
   KEY idx_dt_code (trade_date, stock_code),
-  KEY idx_xg (xg_id)
+  KEY idx_xg (signal_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='选股/因子信号事件(长表)';
-
 /* =========================================================
  * 前瞻收益（监督标签数据源）
  * horizon: v1/v2/v3 等持有期标识
@@ -44,11 +42,17 @@ CREATE TABLE IF NOT EXISTS t_forward_return (
  * ========================================================= */
 CREATE OR REPLACE VIEW vw_sample_label AS
 SELECT
-  fr.trade_date,
-  fr.stock_code,
-  MAX(CASE WHEN fr.ret_high >= 0.01 THEN 1 ELSE 0 END) AS label
-FROM t_forward_return fr
-GROUP BY fr.trade_date, fr.stock_code;
+  ts.trade_date,
+  ts.stock_code,
+  CASE
+    WHEN (
+      ts.v_1_percent >= 1.0
+      OR ts.v_2_percent >= 1.0
+      OR ts.v_3_percent >= 1.0
+    ) THEN 1
+    ELSE 0
+  END AS label
+FROM t_stock_stat ts;
 
 /* =========================================================
  * 模型元数据（用于可复现与回溯）

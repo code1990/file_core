@@ -1,0 +1,9 @@
+# 忽略 SQLite 数据库文件
+stock.db
+stock.db-wal
+stock.db-shm
+
+# 忽略 data/999 目录下的所有文件
+data/999/
+train/
+.idea/
