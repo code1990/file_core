@@ -4,10 +4,10 @@ import json
 import re
 import time
 
-DB_FILE = "stock.db"
+DB_PATH = r"../stock.db"
 
 def init_db():
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS t_stock_change (
@@ -39,7 +39,7 @@ def fetch_stock_changes(code, market=0):
     return data.get("data")
 
 def save_to_db(stock_data):
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     stock_code = stock_data.get("c")
     stock_name = stock_data.get("n")
@@ -68,7 +68,7 @@ def fetch_and_save(code, market=0):
 
 
 def process_all_stocks():
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
     cur.execute("SELECT stock_code FROM t_stock_quote")

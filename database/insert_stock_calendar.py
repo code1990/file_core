@@ -1,11 +1,11 @@
 import sqlite3
 
 # === 配置 ===
-db_file = "stock.db"  # SQLite 数据库文件
-txt_file = "data/date.txt"  # 存放交易日的 txt 文件
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
+txt_file = "../data/date.txt"  # 存放交易日的 txt 文件
 
 # === 打开数据库 ===
-conn = sqlite3.connect(db_file)
+conn = sqlite3.connect(DB_PATH)
 cur = conn.cursor()
 # cur.execute("""
 # CREATE TABLE IF NOT EXISTS t_stock_calendar (

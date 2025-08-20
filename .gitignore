@@ -7,3 +7,4 @@ stock.db-shm
 data/999/
 train/
 .idea/
+data/*.parquet

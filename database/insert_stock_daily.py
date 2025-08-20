@@ -2,6 +2,8 @@ import time
 import sqlite3
 import pymysql
 
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
+
 # ===== MySQL 连接：启用服务端游标（流式）=====
 mysql_conn = pymysql.connect(
     host="localhost",
@@ -14,7 +16,7 @@ mysql_conn = pymysql.connect(
 mysql_cur = mysql_conn.cursor()
 
 # ===== SQLite 连接 =====
-sqlite_conn = sqlite3.connect("stock.db")
+sqlite_conn = sqlite3.connect(DB_PATH)
 sqlite_cur = sqlite_conn.cursor()
 
 # ——导入加速用的 PRAGMA（仅导入阶段使用）——

@@ -5,7 +5,7 @@ import re
 import time
 
 
-DB_PATH = "stock.db"
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
 
 # 加载 position.json 做信号映射
 with open("./data/postition.json", "r", encoding="utf-8") as f:

@@ -2,6 +2,8 @@ import pymysql
 import sqlite3
 import pandas as pd
 
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
+
 # MySQL 连接
 mysql_conn = pymysql.connect(
     host="localhost",
@@ -12,7 +14,7 @@ mysql_conn = pymysql.connect(
 )
 
 # SQLite3 连接
-sqlite_conn = sqlite3.connect("stock.db")
+sqlite_conn = sqlite3.connect(DB_PATH)
 
 # 读取 MySQL 数据
 df = pd.read_sql("SELECT * FROM t_stock_stat", mysql_conn)

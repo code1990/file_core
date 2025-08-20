@@ -3,10 +3,10 @@ import requests
 import sqlite3
 import math
 
-DB_FILE = "stock.db"
+DB_PATH = r"../stock.db"
 
 def init_db():
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
     CREATE TABLE IF NOT EXISTS t_stock_quote (
@@ -133,7 +133,7 @@ def fetch_and_store(start_pos=0, page_size=20):
     fields = js["data"]["sort"]["fields"]
     data = js["data"]["sort"]
 
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
     for stock_code, values in data.items():

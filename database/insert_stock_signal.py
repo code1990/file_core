@@ -2,11 +2,11 @@ import sqlite3
 from pathlib import Path
 
 # === 配置 ===
-db_file = "stock.db"  # SQLite 数据库文件
-root_dir = Path(r"D:\dev\dev_123\999")  # 根目录
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
+root_dir = Path(r"../data/999")  # 根目录
 
 # === 打开数据库（开启 WAL 并发模式） ===
-conn = sqlite3.connect(db_file, check_same_thread=False)
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cur = conn.cursor()
 cur.execute("PRAGMA journal_mode=WAL;")
 cur.execute("PRAGMA synchronous=NORMAL;")

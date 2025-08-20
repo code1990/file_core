@@ -22,7 +22,7 @@ from sklearn.tree import _tree, DecisionTreeClassifier
 import joblib
 
 # ========= 可配置 =========
-DB_PATH = "signals.db"                # 你的 SQLite 路径
+DB_PATH = r"../stock.db"  # SQLite 数据库文件
 TABLE = "t_signal"                    # 数据表
 DATE_COL = "trade_date"
 ID_COLS = ["code", "trade_date"]      # 方便回写预测结果
