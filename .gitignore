@@ -5,6 +5,10 @@ stock.db-shm
 
 # 忽略 data/999 目录下的所有文件
 data/999/
+data/code2/
+data/*.csv
+data/*.xls
+data/*.xlsx
 train/
 .idea/
 data/*.parquet

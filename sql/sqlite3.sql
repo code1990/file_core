@@ -243,3 +243,19 @@ JOIN t_stock_signal c
  AND a.stock_code = c.stock_code
  AND b.signal_name < c.signal_name
 GROUP BY a.trade_date, a.stock_code, combo_name;
+
+CREATE TABLE IF NOT EXISTS t_formula (
+    id INTEGER PRIMARY KEY,              -- 唯一ID
+    name TEXT,                           -- 公式名称
+    source_code TEXT,                    -- 公式源码
+    label_name TEXT,                     -- 标签名称
+    uploader_name TEXT,                  -- 上传者
+    upload_time TEXT,                    -- 上传时间
+    instruction TEXT,                    -- 说明/简介
+    hot_val INTEGER,                     -- 热度
+    click_times INTEGER,                 -- 点击次数
+    discuss_number INTEGER,              -- 评论数
+    avg_star REAL,                       -- 平均评分
+    market_list TEXT,                    -- 支持的市场（JSON）
+    extra_json TEXT                      -- 其他原始字段（JSON存储）
+);

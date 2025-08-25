@@ -130,14 +130,22 @@ def save_detail(stock_data):
     conn.close()
 
 
-def process_all_stocks():
+def process_all_stocks(start=0, end=None):
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
-    cur.execute("SELECT stock_code FROM t_stock_quote")
+    # 先取出所有股票
+    cur.execute("SELECT stock_code FROM t_stock_quote ORDER BY stock_code")
     rows = cur.fetchall()
 
-    for (full_code,) in rows:
+    # 切片范围
+    if end is None or end > len(rows):
+        end = len(rows)
+    rows = rows[start:end]
+
+    print(f"👉 本次处理股票范围: {start} ~ {end-1} (共 {len(rows)} 支)")
+
+    for idx, (full_code,) in enumerate(rows, start=start):
         # 市场判断
         if full_code.endswith(".SZ"):
             stock_id = full_code.replace(".SZ", "")
@@ -160,7 +168,7 @@ def process_all_stocks():
                 (stock_id, trade_date)
             )
             count = cur.fetchone()[0]
-            if count > 0:   # ✅ 修复：已有数据就跳过
+            if count > 0:
                 print(f"⏩ 跳过 {stock_id}-{trade_date} (已有 {count} 条记录)")
                 continue
 
